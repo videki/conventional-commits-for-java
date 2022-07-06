@@ -77,10 +77,10 @@ jobs:
         with:
             java-version: 11
             distribution: 'adopt'
-            cache: 'maven'
-            server-id: ossrh
-            server-username: SONATYPE_USERNAME
-            server-password: SONATYPE_PASSWORD
+#            cache: 'maven'
+#            server-id: ossrh
+#            server-username: SONATYPE_USERNAME
+#            server-password: SONATYPE_PASSWORD
             gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
             gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
@@ -96,10 +96,10 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config --global user.name git
-          git config --global user.email git@github.com
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
         env:
-          GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
+          GITHUB_TOKEN: ${{ github.token }}
 
       - name: Prepare release
         run: mvn release:prepare -Prelease -DskipTests $MAVEN_OPTS $MAVEN_CLI_OPTS
@@ -107,6 +107,7 @@ jobs:
           OSSRH_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           OSSRH_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish release
         run: mvn release:perform -Prelease -DskipTests $MAVEN_OPTS $MAVEN_CLI_OPTS
@@ -114,3 +115,4 @@ jobs:
           OSSRH_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           OSSRH_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

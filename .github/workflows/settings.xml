@@ -11,7 +11,7 @@
     <profile>
         <id>gpg</id>
         <properties>
-            <gpg.passsphrase>${env.MAVEN_GPG_PASSPHRASE}</gpg.passsphrase>
+            <gpg.passphrase>${env.MAVEN_GPG_PASSPHRASE}</gpg.passphrase>
         </properties>
     </profile>
   </profiles>

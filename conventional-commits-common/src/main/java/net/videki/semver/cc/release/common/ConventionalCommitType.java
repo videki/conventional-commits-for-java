@@ -5,7 +5,6 @@ import java.util.List;
 
 /**
  * Conventional commits accepted commit types.
- *
  */
 public enum ConventionalCommitType implements Comparable<ConventionalCommitType>
 {

@@ -97,7 +97,9 @@ jobs:
       - name: Configure Git
         run: |
           git config --global user.name "videki"
-          git config --global user.email "$GIT_EMAIL"
+          git config --global user.email $GIT_EMAIL
+        env:
+          GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
 
       - name: Prepare release
         run: mvn release:prepare -Prelease -DskipTests $MAVEN_OPTS $MAVEN_CLI_OPTS

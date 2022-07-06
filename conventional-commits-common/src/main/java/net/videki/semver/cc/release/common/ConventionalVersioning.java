@@ -4,6 +4,9 @@ import net.videki.semver.cc.release.common.scm.ScmApiException;
 
 import java.io.IOException;
 
+/**
+ * Versioning adapter.
+ */
 public interface ConventionalVersioning
 {
     LogHandler logHandler();

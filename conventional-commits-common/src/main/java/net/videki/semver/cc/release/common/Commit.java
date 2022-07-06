@@ -4,6 +4,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
+/**
+ * SCM commit representation.
+ *
+ * @author Rossillo
+ */
 public class Commit
 {
     private static final Pattern BREAKING_REGEX = Pattern.compile(

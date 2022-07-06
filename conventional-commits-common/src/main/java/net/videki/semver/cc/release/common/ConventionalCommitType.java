@@ -3,6 +3,9 @@ package net.videki.semver.cc.release.common;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Conventional commits accepted commit types.
+ */
 public enum ConventionalCommitType implements Comparable<ConventionalCommitType>
 {
     BREAKING_CHANGE(SemanticVersionChange.MAJOR, "", "!"),

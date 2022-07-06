@@ -96,8 +96,8 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config --global user.name "videki"
-          git config --global user.email $GIT_EMAIL
+          git config --global user.name git
+          git config --global user.email git@github.com
         env:
           GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
 

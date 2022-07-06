@@ -4,6 +4,9 @@ import org.eclipse.jgit.revwalk.RevCommit;
 
 import java.util.Objects;
 
+/**
+ * Git commit adapter.
+ */
 public class GitCommitAdapter implements CommitAdapter<RevCommit>
 {
     private final RevCommit commit;

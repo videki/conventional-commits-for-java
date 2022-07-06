@@ -6,6 +6,7 @@ import java.io.IOException;
 
 /**
  * Versioning adapter.
+ *
  */
 public interface ConventionalVersioning
 {

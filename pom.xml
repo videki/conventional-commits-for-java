@@ -218,8 +218,6 @@
                         <version>1.6</version>
                         <configuration>
                             <gpgArguments>
-                                <gpgArgument>--no-tty</gpgArgument>
-                                <gpgArgument>--batch</gpgArgument>
                                 <gpgArgument>--pinentry-mode</gpgArgument>
                                 <gpgArgument>loopback</gpgArgument>
                             </gpgArguments>

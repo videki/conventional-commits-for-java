@@ -1,11 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.smartling.cc4j</groupId>
+    <groupId>net.videki.semver</groupId>
     <artifactId>conventional-commits-parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.2.1-SNAPSHOT</version>
+    <version>0.2.2-SNAPSHOT</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>11</java.version>
+        <clover.version>4.4.1</clover.version>
+        <clover.check.ratio.min>50%</clover.check.ratio.min>
     </properties>
     <modules>
         <module>conventional-commits-common</module>
@@ -22,40 +25,40 @@
     </licenses>
 
     <scm>
-        <url>https://github.com/foo4u/conventional-commits-for-java</url>
-        <developerConnection>scm:git:ssh://git@github.com/foo4u/conventional-commits-for-java</developerConnection>
+        <url>https://github.com/videki/conventional-commits-for-java</url>
+        <developerConnection>scm:git:ssh://git@github.com/videki/conventional-commits-for-java</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
-    <url>https://github.com/foo4u/conventional-commits-for-java</url>
+    <url>https://github.com/videki/conventional-commits-for-java</url>
 
     <dependencies>
         <dependency>
             <groupId>org.eclipse.jgit</groupId>
             <artifactId>org.eclipse.jgit</artifactId>
-            <version>5.5.0.201909110433-r</version>
+            <version>6.1.0.202203080745-r</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.28</version>
+            <version>1.7.36</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.28</version>
+            <version>1.7.36</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>2.28.2</version>
+            <version>4.5.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -71,30 +74,8 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.6</version>
-                <configuration>
-                    <gpgArguments>
-                        <gpgArgument>--no-tty</gpgArgument>
-                        <gpgArgument>--batch</gpgArgument>
-                        <gpgArgument>--pinentry-mode</gpgArgument>
-                        <gpgArgument>loopback</gpgArgument>
-                    </gpgArguments>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.3</version>
+                <version>3.0.0-M5</version>
                 <configuration>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <dryRun>false</dryRun>
@@ -106,32 +87,167 @@
             </plugin>
         </plugins>
     </build>
+
+    <issueManagement>
+        <system>github</system>
+        <url>https://github.com/videki/conventional-commits-for-java/issues</url>
+    </issueManagement>
+
     <developers>
         <developer>
             <name>Scott Rossillo</name>
             <organization>Smartling, Inc.</organization>
             <url>https://github.com/foo4u/</url>
         </developer>
+        <developer>
+            <name>Levente Ban</name>
+            <url>https://github.com/videki/</url>
+            <email>oss.levente.ban@gmail.com</email>
+        </developer>
     </developers>
+
     <distributionManagement>
         <repository>
-            <id>sonatype-oss-staging</id>
+            <id>ossrh</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
         <snapshotRepository>
-            <id>bintray-smartling-ci</id>
-            <url>https://api.bintray.com/maven/smartling/smartling-ci/conventional-commits-for-java;publish=1</url>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
+
     <profiles>
+        <profile>
+            <id>coverage</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.openclover</groupId>
+                        <artifactId>clover-maven-plugin</artifactId>
+                        <version>${clover.version}</version>
+                        <configuration>
+                            <targetPercentage>${clover.check.ratio.min}</targetPercentage>
+                            <snapshot>${user.home}/.clover/atlassian-plugins-clover.snapshot</snapshot>
+                            <singleCloverDatabase>true</singleCloverDatabase>
+                            <generatePdf>false</generatePdf>
+                            <generateXml>true</generateXml>
+                            <generateHtml>true</generateHtml>
+                            <generateJson>false</generateJson>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>clover-clean</id>
+                                <phase>clean</phase>
+                                <goals>
+                                    <goal>clean</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>clover</id>
+                                <phase>process-sources</phase>
+                                <goals>
+                                    <goal>setup</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>clover-integration-test-setup</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>optimizeIntegration</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>clover</goal>
+                                    <goal>log</goal>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+
+            <reporting>
+                <plugins>
+                    <plugin>
+                        <groupId>org.openclover</groupId>
+                        <artifactId>clover-maven-plugin</artifactId>
+                        <version>${clover.version}</version>
+                    </plugin>
+                </plugins>
+            </reporting>
+        </profile>
+
         <profile>
             <id>release</id>
             <build>
                 <plugins>
                     <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.3.2</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <configuration>
+                            <gpgArguments>
+                                <gpgArgument>--no-tty</gpgArgument>
+                                <gpgArgument>--batch</gpgArgument>
+                                <gpgArgument>--pinentry-mode</gpgArgument>
+                                <gpgArgument>loopback</gpgArgument>
+                            </gpgArguments>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.13</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                    <!--plugin>
                         <groupId>com.smartling.cc4j</groupId>
                         <artifactId>conventional-commits-maven-plugin</artifactId>
-                        <version>0.1.0</version>
+                        <version>0.2.0</version>
                         <inherited>false</inherited>
                         <executions>
                             <execution>
@@ -142,7 +258,7 @@
                                 </goals>
                             </execution>
                         </executions>
-                    </plugin>
+                    </plugin-->
                 </plugins>
             </build>
         </profile>

@@ -1,7 +1,5 @@
 name: Tests
 
-env:
-
 on:
   push:
     paths:

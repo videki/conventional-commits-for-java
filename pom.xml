@@ -1,11 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.smartling.cc4j</groupId>
+    <groupId>net.videki.semver</groupId>
     <artifactId>conventional-commits-parent</artifactId>
     <packaging>pom</packaging>
     <version>0.2.1-SNAPSHOT</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>11</java.version>
     </properties>
     <modules>
         <module>conventional-commits-common</module>
@@ -22,12 +23,12 @@
     </licenses>
 
     <scm>
-        <url>https://github.com/foo4u/conventional-commits-for-java</url>
-        <developerConnection>scm:git:ssh://git@github.com/foo4u/conventional-commits-for-java</developerConnection>
+        <url>https://github.com/videki/conventional-commits-for-java</url>
+        <developerConnection>scm:git:ssh://git@github.com/videki/conventional-commits-for-java</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
-    <url>https://github.com/foo4u/conventional-commits-for-java</url>
+    <url>https://github.com/videki/conventional-commits-for-java</url>
 
     <dependencies>
         <dependency>
@@ -106,28 +107,52 @@
             </plugin>
         </plugins>
     </build>
+
+    <issueManagement>
+        <system>github</system>
+        <url>https://github.com/videki/conventional-commits-for-java/issues</url>
+    </issueManagement>
+
     <developers>
         <developer>
             <name>Scott Rossillo</name>
             <organization>Smartling, Inc.</organization>
             <url>https://github.com/foo4u/</url>
         </developer>
+        <developer>
+            <name>Levente Ban</name>
+            <url>https://github.com/videki/</url>
+            <email>oss.levente.ban@gmail.com</email>
+        </developer>
     </developers>
+
     <distributionManagement>
         <repository>
             <id>sonatype-oss-staging</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
         <snapshotRepository>
-            <id>bintray-smartling-ci</id>
-            <url>https://api.bintray.com/maven/smartling/smartling-ci/conventional-commits-for-java;publish=1</url>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
+
     <profiles>
         <profile>
             <id>release</id>
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.7</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
                     <plugin>
                         <groupId>com.smartling.cc4j</groupId>
                         <artifactId>conventional-commits-maven-plugin</artifactId>

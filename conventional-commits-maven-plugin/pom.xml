@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>conventional-commits-parent</artifactId>
-        <groupId>com.smartling.cc4j</groupId>
+        <groupId>net.videki.semver</groupId>
         <version>0.2.1-SNAPSHOT</version>
     </parent>
 
@@ -23,7 +23,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.smartling.cc4j</groupId>
+            <groupId>net.videki.semver</groupId>
             <artifactId>conventional-commits-common</artifactId>
             <version>0.2.1-SNAPSHOT</version>
         </dependency>

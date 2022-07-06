@@ -1,7 +1,11 @@
 # Conventional Commits for Java
 
+![Build](https://github.com/videki/conventional-commits-for-java/workflows/Build/badge.svg)
+![Tests](https://github.com/videki/conventional-commits-for-java/workflows/Tests/badge.svg)
+[![Codecov branch](https://img.shields.io/codecov/c/github/videki/conventional-commits-for-java/master?label=Coverage)](https://codecov.io/gh/videki/conventional-commits-for-java)
+
 Provides a Java implementation of [Conventional Commits] for projects built
-with Java 1.8+ using Git for version control.
+with Java 11+ using Git for version control.
 
 ## Maven Plugin
 

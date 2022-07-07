@@ -6,6 +6,8 @@
 Provides a Java implementation of [Conventional Commits] for projects built
 with Java 11+ using Git for version control.
 
+Note: This is a fork of foo4u/conventional-commits-for-java.
+
 ## Maven Plugin
 
 ### Usage

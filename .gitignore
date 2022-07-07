@@ -82,6 +82,8 @@ local.properties
 .idea/**/dictionaries
 .idea/**/shelf
 
+.editorconfig
+
 # Generated files
 .idea/**/contentModel.xml
 

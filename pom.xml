@@ -14,13 +14,14 @@
         <module>conventional-commits-common</module>
         <module>conventional-commits-maven-plugin</module>
     </modules>
-    <name>Conventional Commits Parent</name>
+    <name>Conventional Commits Project</name>
     <description>Provides conventional commits plugins for Java build systems.</description>
 
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
         </license>
     </licenses>
 

@@ -15,59 +15,85 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class LogHandler
-{
-    private final Logger logger = LoggerFactory.getLogger(LogHandler.class);
+/**
+ * Commit log handler to parse the commit messages of a git repo since the last commit tag.
+ */
+public class LogHandler {
+  /**
+   * Internal logger.
+   */
+  private final Logger logger = LoggerFactory.getLogger(LogHandler.class);
 
-    private final Repository repository;
-    private final Git git;
+  /**
+   * The git repository to be parsed.
+   */
+  private final Repository repository;
 
-    public LogHandler(final Repository repository)
-    {
-        Objects.requireNonNull(repository, "repository cannot be null");
-        this.repository = repository;
-        this.git = Git.wrap(repository);
+  /**
+   * Git repo handler.
+   */
+  private final Git git;
+
+  /**
+   * Constructor to setup the handler for a given git repo.
+   *
+   * @param repository The git repository.
+   */
+  public LogHandler(final Repository repository) {
+    Objects.requireNonNull(repository, "repository cannot be null");
+    this.repository = repository;
+    this.git = Git.wrap(repository);
+  }
+
+  /**
+   * Returns the last commit belonging to the last git tag.
+   *
+   * @return The last git commit for the last tag.
+   * @throws IOException     thrown in case of any IO issues.
+   * @throws GitAPIException thrown in case os git-related errors.
+   */
+  RevCommit getLastTaggedCommit() throws IOException, GitAPIException {
+    final List<Ref> tags = git.tagList().call();
+    final List<ObjectId> peeledTags = tags.stream().map(t -> repository.peel(t).getPeeledObjectId()).collect(Collectors.toList());
+    final PlotWalk walk = new PlotWalk(repository);
+    final RevCommit start = walk.parseCommit(repository.resolve("HEAD"));
+
+    walk.markStart(start);
+
+    RevCommit revCommit;
+    while ((revCommit = walk.next()) != null) {
+      if (peeledTags.contains(revCommit.getId())) {
+        logger.debug("Found commit matching last tag: {}", revCommit);
+        break;
+      }
     }
 
-    RevCommit getLastTaggedCommit() throws IOException, GitAPIException
-    {
-        final List<Ref> tags = git.tagList().call();
-        final List<ObjectId> peeledTags = tags.stream().map(t -> repository.peel(t).getPeeledObjectId()).collect(Collectors.toList());
-        final PlotWalk walk = new PlotWalk(repository);
-        final RevCommit start = walk.parseCommit(repository.resolve("HEAD"));
+    walk.close();
 
-        walk.markStart(start);
+    return revCommit;
+  }
 
-        RevCommit revCommit;
-        while ((revCommit = walk.next()) != null)
-        {
-            if (peeledTags.contains(revCommit.getId()))
-            {
-                logger.debug("Found commit matching last tag: {}", revCommit);
-                break;
-            }
-        }
+  /**
+   * Returns the list of commits since the last tag.
+   * These will be parsed and based on their commit types will the next release version be determined.
+   *
+   * @return The interested commit list.
+   * @throws IOException     thrown in case of any IO issues.
+   * @throws GitAPIException thrown in case os git-related errors.
+   */
+  public Iterable<RevCommit> getCommitsSinceLastTag() throws IOException, GitAPIException {
+    final ObjectId start = repository.resolve("HEAD");
+    final RevCommit lastCommit = this.getLastTaggedCommit();
 
-        walk.close();
-
-        return revCommit;
+    if (lastCommit == null) {
+      logger.warn("No annotated tags found matching any commits on branch");
+      return git.log().call();
     }
 
-    public Iterable<RevCommit> getCommitsSinceLastTag() throws IOException, GitAPIException
-    {
-        final ObjectId start = repository.resolve("HEAD");
-        final RevCommit lastCommit = this.getLastTaggedCommit();
+    logger.info("Listing commits in range {}...{}", start.getName(), lastCommit.getId().getName());
 
-        if (lastCommit == null)
-        {
-            logger.warn("No annotated tags found matching any commits on branch");
-            return git.log().call();
-        }
-
-        logger.info("Listing commits in range {}...{}", start.getName(), lastCommit.getId().getName());
-
-        return git.log().addRange(lastCommit.getId(), start).call();
-    }
+    return git.log().addRange(lastCommit.getId(), start).call();
+  }
 
 }
 

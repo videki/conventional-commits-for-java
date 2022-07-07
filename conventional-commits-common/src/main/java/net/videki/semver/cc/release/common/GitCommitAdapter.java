@@ -7,25 +7,39 @@ import java.util.Objects;
 /**
  * Git commit adapter.
  */
-public class GitCommitAdapter implements CommitAdapter<RevCommit>
-{
-    private final RevCommit commit;
+public class GitCommitAdapter implements CommitAdapter<RevCommit> {
+  /**
+   * The underlying commit.
+   */
+  private final RevCommit commit;
 
-    GitCommitAdapter(final RevCommit commit)
-    {
-        Objects.requireNonNull(commit, "commit cannot be null");
-        this.commit = commit;
-    }
+  /**
+   * Constructor based on the underlying commit.
+   *
+   * @param commit the specific commit.
+   */
+  GitCommitAdapter(final RevCommit commit) {
+    Objects.requireNonNull(commit, "commit cannot be null");
+    this.commit = commit;
+  }
 
-    @Override
-    public String getShortMessage()
-    {
-        return commit.getShortMessage();
-    }
+  /**
+   * Returns the commit message.
+   *
+   * @return The commit message.
+   */
+  @Override
+  public String getShortMessage() {
+    return commit.getShortMessage();
+  }
 
-    @Override
-    public RevCommit getCommit()
-    {
-        return commit;
-    }
+  /**
+   * Returns the commit itself.
+   *
+   * @return The SCM commit itself.
+   */
+  @Override
+  public RevCommit getCommit() {
+    return commit;
+  }
 }

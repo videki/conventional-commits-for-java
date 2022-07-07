@@ -5,9 +5,18 @@ package net.videki.semver.cc.release.common;
  *
  * @param <T> The scm-specific commit.
  */
-public interface CommitAdapter<T>
-{
-    String getShortMessage();
+public interface CommitAdapter<T> {
+  /**
+   * Returns the commit message.
+   *
+   * @return the commit message.
+   */
+  String getShortMessage();
 
-    T getCommit();
+  /**
+   * Returns the original commit.
+   *
+   * @return the commit itself.
+   */
+  T getCommit();
 }

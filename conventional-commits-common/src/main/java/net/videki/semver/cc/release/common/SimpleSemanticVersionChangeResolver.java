@@ -7,8 +7,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Default change resolver implementation.
+ */
 public class SimpleSemanticVersionChangeResolver implements SemanticVersionChangeResolver
 {
+  /**
+   * Determine a semantic version change for a commit list.
+   *
+   * @param commits The commit list.
+   * @return The calculated version change need.
+   */
     @Override
     public SemanticVersionChange resolveChange(final Iterable<RevCommit> commits)
     {

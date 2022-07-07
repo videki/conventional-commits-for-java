@@ -11,19 +11,27 @@ Note: This is a fork of foo4u/conventional-commits-for-java.
 
 ## Maven Plugin
 
+This plugin works together with the [Maven Release Plugin] to create conventional commit compliant releases for
+your Maven projects.
+
+### Goals
+
+#### validate
+
+Checks whether the project has conventional commits compliant changes since the last release tag.
+
+#### version
+
+Calculates the release version for the maven release plugin based on the commit messages.
+
 ### Usage
 
-This plugin works together with the [Maven Release Plugin] to create
-conventional commit compliant releases for your Maven projects
-
-#### Install the Plugin
-
-In your main `pom.xml` file add the plugin:
+In your main `pom.xml` file add the plugin (for the latest version see the project tags or the Maven Central):
 
 ```xml
     <plugins>
         <plugin>
-            <groupId>com.smartling.cc4j</groupId>
+            <groupId>net.videki.semver</groupId>
             <artifactId>conventional-commits-maven-plugin</artifactId>
             <version>${version}</version>
         </plugin>
@@ -44,7 +52,7 @@ In your main `pom.xml` file add the plugin:
 
 In your CI code:
 
-- Execute only for master|main branch
+- Execute only for master | main branch
 - skip builds for build(release) and ci(release) commits
 
 GitHub workflow:
